@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 ultralytics = "*"
 streamlit = {extras = ["pdf"], version = "*"}
+opencv-python-headless = "*"
 
 [dev-packages]
 
