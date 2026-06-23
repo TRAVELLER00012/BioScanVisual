@@ -1,30 +1,34 @@
 from ultralytics import YOLO
 from PIL import Image
+import streamlit as st
 
-MODELS = {
-    "26x": YOLO("./models/26x-200.pt"),
-    "26l": YOLO("./models/26l-200.pt"),
-    "26m": YOLO("./models/26m-200.pt"),
-    "11x": YOLO("./models/11x-200.pt"),
-    "11l": YOLO("./models/11l-200.pt"),
-    "11m": YOLO("./models/11m-200.pt"),
-    "8x": YOLO("./models/8x-200.pt"),
-    "8l": YOLO("./models/8l-200.pt"),
-    "8m": YOLO("./models/8m-200.pt"),
-    "26x-2": YOLO("./models/26x-big.pt")
+MODEL_PATHS = {
+    "26x": "./models/26x-200.pt",
+    "26l": "./models/26l-200.pt",
+    "26m": "./models/26m-200.pt",
+    "11x": "./models/11x-200.pt",
+    "11l": "./models/11l-200.pt",
+    "11m": "./models/11m-200.pt",
+    "8x": "./models/8x-200.pt",
+    "8l": "./models/8l-200.pt",
+    "8m": "./models/8m-200.pt",
+    "26x-2": "./models/26x-big.pt"
 }
+@st.cache_resource
+def get_model(model_name):
+    path = MODEL_PATHS.get(model_name, MODEL_PATHS["26x"])
+    return YOLO(path)
+
 
 def process(files, model_name="26x"):
     images = [Image.open(file) for file in files]
 
-    model = MODELS.get(model_name, MODELS["26x"])
+    model = get_model(model_name)
 
-    results = model.predict(
+    return model.predict(
         source=images,
         conf=0.15,
         imgsz=2048,
         verbose=False,
-        max_det=10_000
+        max_det=10000
     )
-
-    return results
