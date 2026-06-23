@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ultralytics = "*"
+ultralytics = ">=8.4.75"
 streamlit = {extras = ["pdf"], version = "*"}
 opencv-python-headless = "*"
 
